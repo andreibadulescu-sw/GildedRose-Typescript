@@ -17,6 +17,10 @@ export class GildedRose {
         this.items = items;
     }
 
+    // progressTime()
+    // the sellIn value that an item enters the function
+    // with represents the value of the previous day, not
+    // the current day
     updateQuality() {
         for (let i = 0; i < this.items.length; i++) {
             if (this.items[i].name != 'Aged Brie' && this.items[i].name != 'Backstage passes to a TAFKAL80ETC concert') {
