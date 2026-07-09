@@ -34,14 +34,14 @@ describe('Gilded Rose', function () {
         const gildedRose = new GildedRose([ new Item('Conjured foo', 10, 20) ]);
         const items = gildedRose.updateQuality();
         expect(items[0].sellIn).to.equal(9);
-        expect(items[0].quality).to.equal(19);
+        expect(items[0].quality).to.equal(18);
     });
 
     it('conjured expired quality 2x decrease', function() {
         const gildedRose = new GildedRose([ new Item('Conjured foo', 0, 20) ]);
         const items = gildedRose.updateQuality();
         expect(items[0].sellIn).to.equal(0);
-        expect(items[0].quality).to.equal(18);
+        expect(items[0].quality).to.equal(16);
     });
     
 

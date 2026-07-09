@@ -61,9 +61,12 @@ export class GildedRose {
             }
 
             // double the effect for expired items
-            if (daysLeft < 0) {
+            if (daysLeft < 0)
                 valueMultiplier *= 2;
-            }
+
+            // double the effect for conjured items
+            if (name.includes('Conjured'))
+                valueMultiplier *= 2;
 
             // modifying item quality
             if (valueMultiplier > 0) {
@@ -78,6 +81,9 @@ export class GildedRose {
         return this.items;
     }
 
+    // this function enforced value boundaries for the
+    // quality property of an item and returns the correct,
+    // bounded value
     private enforceQualityBoundaries(value: number) {
         if (value > 50)
             value = 50;
