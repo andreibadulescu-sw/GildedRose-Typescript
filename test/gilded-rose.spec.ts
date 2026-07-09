@@ -17,10 +17,10 @@ describe('Gilded Rose', function () {
     });
 
     it('quality 2x decrease / sell-in stuck for expired items', function() {
-        const gildedRose = new GildedRose([ new Item('foo', 0, 10) ]);
+        const gildedRose = new GildedRose([ new Item('foo', -1, 10) ]);
         const items = gildedRose.updateQuality();
+        expect(items[0].sellIn).to.equal(-1);
         expect(items[0].quality).to.equal(8);
-        expect(items[0].sellIn).to.equal(0);
     });
 
     it('quality minimum (0) respected', function() {
@@ -38,9 +38,9 @@ describe('Gilded Rose', function () {
     });
 
     it('conjured expired quality 2x decrease', function() {
-        const gildedRose = new GildedRose([ new Item('Conjured foo', 0, 20) ]);
+        const gildedRose = new GildedRose([ new Item('Conjured foo', -1, 20) ]);
         const items = gildedRose.updateQuality();
-        expect(items[0].sellIn).to.equal(0);
+        expect(items[0].sellIn).to.equal(-1);
         expect(items[0].quality).to.equal(16);
     });
     
@@ -53,9 +53,9 @@ describe('Gilded Rose', function () {
     });
 
     it('Aged Brie expired quality 2x increase', function() {
-        const gildedRose = new GildedRose([ new Item('Aged Brie', 0, 20) ]);
+        const gildedRose = new GildedRose([ new Item('Aged Brie', -1, 20) ]);
         const items = gildedRose.updateQuality();
-        expect(items[0].sellIn).to.equal(0);
+        expect(items[0].sellIn).to.equal(-1);
         expect(items[0].quality).to.equal(22);
     });
 
@@ -95,9 +95,9 @@ describe('Gilded Rose', function () {
     });
 
     it('Backstage Passes expired', function() {
-        const gildedRose = new GildedRose([ new Item('Backstage passes to a TAFKAL80ETC concert', 0, 20) ]);
+        const gildedRose = new GildedRose([ new Item('Backstage passes to a TAFKAL80ETC concert', -1, 20) ]);
         const items = gildedRose.updateQuality();
-        expect(items[0].sellIn).to.equal(0);
+        expect(items[0].sellIn).to.equal(-1);
         expect(items[0].quality).to.equal(0);
     });
 

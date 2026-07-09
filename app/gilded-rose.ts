@@ -28,14 +28,10 @@ export class GildedRose {
             let name: string = this.items[i].name;
             let daysLeft: number = this.items[i].sellIn;
             var value: number = 0;
-            var valueMultiplier: number = 1;
 
-            // decrease days left if item is not legendary
-            if (name !== 'Sulfuras, Hand of Ragnaros') {
-                daysLeft -= 1;
-            } else {
+            // skip legendary items
+            if (name === 'Sulfuras, Hand of Ragnaros')
                 continue;
-            }
 
             // value increase if maxQuality is not exceeded
             if (this.increaseValueItemNames.includes(name))
@@ -45,7 +41,7 @@ export class GildedRose {
                 // check for extra value increase for backstage passes
                 if (name === this.increaseValueItemNames[1]) {
                     if (daysLeft < 0) {
-                        valueMultiplier = 0;
+                        value = 0;
                         this.items[i].quality = 0;
                     } else if (daysLeft < 6) {
                         value += 2;
@@ -62,20 +58,20 @@ export class GildedRose {
 
             // double the effect for expired items
             if (daysLeft < 0)
-                valueMultiplier *= 2;
+                value *= 2;
 
             // double the effect for conjured items
             if (name.includes('Conjured'))
-                valueMultiplier *= 2;
+                value *= 2;
+
+            // decrease number of days left
+            daysLeft -= 1;
 
             // modifying item quality
-            if (valueMultiplier > 0) {
-                let newValue: number = this.items[i].quality + value * valueMultiplier;
-                this.items[i].quality = this.enforceQualityBoundaries(newValue);
-            }
+            this.items[i].quality = this.enforceQualityBoundaries(this.items[i].quality + value);
 
             // modifying item sellIn
-            this.items[i].sellIn = daysLeft >= 0 ? daysLeft : 0;
+            this.items[i].sellIn = daysLeft >= -1 ? daysLeft : -1;
         }
 
         return this.items;
