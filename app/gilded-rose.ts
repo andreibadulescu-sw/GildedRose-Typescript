@@ -17,7 +17,8 @@ export class GildedRose {
         this.items = items;
     }
 
-    private increaseValueItemNames: string[] = ['Aged Brie', 'Backstage passes to a TAFKAL80ETC concert'];
+    private backstagePassesName: string = 'Backstage passes to a TAFKAL80ETC concert'
+    private increaseValueItemNames: string[] = ['Aged Brie', this.backstagePassesName];
 
     // progressTime()
     // the sellIn value that an item enters the function
@@ -36,19 +37,14 @@ export class GildedRose {
             // value increase if maxQuality is not exceeded
             if (this.increaseValueItemNames.includes(name))
             {
-                value += 1;
+                // using a tuple to recover state of passes and the modifier
+                const [modifier, expiredPasses] = this.computeValueIncrease(name, daysLeft);
 
-                // check for extra value increase for backstage passes
-                if (name === this.increaseValueItemNames[1]) {
-                    if (daysLeft < 0) {
-                        value = 0;
-                        this.items[i].quality = 0;
-                    } else if (daysLeft < 6) {
-                        value += 2;
-                    } else if (daysLeft < 11) {
-                        value += 1;
-                    }
-                }
+                // backstage passes are expired!
+                if (expiredPasses)
+                    this.items[i].quality = 0;
+                else
+                    value = modifier;
             }
             else 
             {
@@ -77,7 +73,7 @@ export class GildedRose {
         return this.items;
     }
 
-    // this function enforced value boundaries for the
+    // this function enforces value boundaries for the
     // quality property of an item and returns the correct,
     // bounded value
     private enforceQualityBoundaries(value: number) {
@@ -88,5 +84,28 @@ export class GildedRose {
             value = 0;
 
         return value;
+    }
+
+    // this function computes the value modifier for
+    // the backstage passes. if a value of -1 is
+    // returned, then they are expired and the callback
+    // is invoked
+    private computeValueIncrease(name: string, daysLeft: number): [number, boolean] {
+        switch (name) {
+            case 'Aged Brie':
+                return [1, false];
+            case this.backstagePassesName:
+                if (daysLeft < 0) {
+                    return [0, true];
+                } else if (daysLeft < 6) {
+                    return [3, false];
+                } else if (daysLeft < 11) {
+                    return [2, false];
+                } else {
+                    return [1, false];
+                }
+            default:
+                return [0, false];
+        }
     }
 }
