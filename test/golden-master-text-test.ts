@@ -23,7 +23,7 @@ describe('Gilded Rose Master Tests', function () {
         
         const items = new GildedRose(gildedRose.updateQuality()).updateQuality();
         
-        expect(items).to.equal([
+        expect(items).to.deep.equal([
             new Item('Sulfuras, Hand of Ragnaros', 100, 80),
             new Item('Backstage passes to a TAFKAL80ETC concert', 18, 22),
             new Item('Backstage passes to a TAFKAL80ETC concert', 7, 24),
